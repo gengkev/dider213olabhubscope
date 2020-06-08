@@ -1,0 +1,101 @@
+/* General styles */
+main {
+  padding-top: 2rem;
+  padding-bottom: 4rem;
+}
+
+h1, h2, h3 {
+  padding-top: 0.5em;
+}
+
+/* Anchor links */
+.anchor-link {
+  position: absolute;
+  margin-left: -1em;
+  padding-right: 0.5em;
+  text-decoration: none;
+  color: #ddd;
+}
+
+/* Course list */
+.course-card {
+  width: 18rem;
+  margin-right: 2rem;
+  margin-bottom: 1rem;
+  float: left;
+}
+.course-card .card-body {
+  display: block;
+  text-decoration: none;
+}
+
+/* Breadcrumbs */
+.nav-item {
+  white-space: nowrap;
+}
+.my-breadcrumb {
+  margin-left: -0.5em;
+  overflow: hidden;
+}
+.my-breadcrumb .nav-item .nav-link {
+  padding-left: 0;
+}
+.my-breadcrumb .nav-item .nav-link::before {
+  display: inline-block;
+  padding-right: .5em;
+  color: #6c757d;
+  content: "/";
+}
+
+/* Exam list */
+.exam-item-outline {
+  color: #212529;
+}
+
+/* Separate slot with only current reservation */
+.current-reservation {
+  color: #155724;
+  border-color: #61bd76;
+  background-color: #e9f6ec !important;
+}
+
+/* Exam slot form */
+/* Credit: https://stackoverflow.com/a/48273098/689161 */
+.exam-slot-group input[type=radio] {
+  width: 0px;
+  height: 0px;
+  opacity: 0;
+}
+.exam-slot-group .list-group-item {
+  user-select: none;
+  cursor: pointer;
+  background-color: #f6f6f6;
+  margin-bottom: -1px;  /* account for overlapping border */
+}
+.exam-slot-group .list-group-item:first-of-type {
+  border-top-left-radius: .25rem;
+  border-top-right-radius: .25rem;
+}
+.exam-slot-group input[type=radio].registered-slot + .list-group-item {
+  color: #155724;
+  border-color: #61bd76;
+  background-color: #e9f6ec !important;
+}
+.exam-slot-group input[type=radio].disabled-slot + .list-group-item {
+  background-color: transparent;
+  border: 0;
+  /*color: #878f97;*/
+  color: #a2a8ae;
+}
+.exam-slot-group input[type=radio]:checked + .list-group-item {
+  z-index: 2;
+  border-color: #17a2b8;
+  color: #0c5460;
+  background-color: #d1ecf1;
+}
+.exam-slot-group input[type=radio] + .list-group-item .exam-slot-icon {
+  visibility: hidden;
+}
+.exam-slot-group input[type=radio]:checked + .list-group-item .exam-slot-icon {
+  visibility: visible;
+}
