@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    {% block title %}Page{% endblock %}
+    &mdash; Exam Registration System
+  </title>
+
+  <link href="{{ url_for('static', filename='vendor/bootstrap-4.5.0/css/bootstrap.min.css') }}" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk">
+  <link href="{{ url_for('static', filename='vendor/font-awesome-4.7.0/css/font-awesome.min.css') }}" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN">
+
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand navbar-dark bg-dark">
+    <a class="navbar-brand" href="{# url 'registration:index' #}">Exam Registration System</a>
+
+    <!-- Left-aligned breadcrumbs -->
+    <ol class="navbar-nav mr-auto my-breadcrumb" aria-label="breadcrumb">
+      {% block breadcrumb %}{% endblock %}
+    </ol>
+
+    <!-- Right-aligned account items -->
+    <ul class="navbar-nav ml-auto">
+      {#
+      {% if request.session.sudo_user %}
+      <li class="nav-item">
+        <a class="nav-link"
+            href="{% url 'registration:course-sudo' request.session.sudo_user.course_code %}"
+            title="Sudo {% if request.sudo_enabled %}enabled{% else %}disabled{% endif %} for this page"
+            style="{% if not request.sudo_enabled %}text-decoration: line-through{% endif %}">
+          <i class="fa fa-user-secret" aria-hidden="true"></i>
+          <span class="sr-only">
+            (Sudo
+            {% if request.sudo_enabled %}enabled{% else %}disabled{% endif %}
+            for this page)
+          </span>
+          Acting as
+          <strong>{{ request.session.sudo_user.username }}</strong>
+        </a>
+      </li>
+      {% endif %}
+      #}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{# url 'registration:profile' #}">
+          <i class="fa fa-user" aria-hidden="true"></i>
+          {#
+          {% if user.is_authenticated %}
+          {{ user.get_username }}
+          {% else %}
+          Not logged in
+          {% endif %}
+          #}
+          Username
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/Shibboleth.sso/Logout">
+          <i class="fa fa-sign-out" aria-hidden="true"></i>
+          Logout
+        </a>
+      </li>
+    </ul>
+
+  </nav>
+
+  <main role="main" class="container">
+    {% include 'partials/messages.html' %}
+    {% block content %}
+    {% endblock %}
+  </div>
+
+</body>
+</html>

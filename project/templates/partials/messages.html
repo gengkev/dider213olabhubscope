@@ -1,0 +1,7 @@
+{% with messages = get_flashed_messages() %}
+{% for message in messages %}
+<div class="alert {{ message.tags }} alert-dismissable" role="alert">
+    {{ message|safe }}
+</div>
+{% endfor %}
+{% endwith %}
