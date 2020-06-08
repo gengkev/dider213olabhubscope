@@ -1,6 +1,12 @@
 import os
 
 from flask import Flask
+from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
+
+
+db = SQLAlchemy()
+migrate = Migrate()
 
 
 def create_app(test_config=None):
@@ -18,6 +24,9 @@ def create_app(test_config=None):
         os.makedirs(app.instance_path)
     except OSError:
         pass
+
+    db.init_app(app)
+    migrate.init_app(app, db)
 
     # a simple page that says hello
     @app.route('/hello')
