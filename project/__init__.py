@@ -4,20 +4,16 @@ from flask import Flask
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 
+from . import config
+from .models import db
 
-db = SQLAlchemy()
+
 migrate = Migrate()
-
 
 def create_app(test_config=None):
     # create and configure the app
     app = Flask(__name__, instance_relative_config=True)
-    app.config.from_mapping(
-        SECRET_KEY='dev',
-        DATABASE=os.path.join(app.instance_path, 'db.sqlite'),
-    )
-
-    # TODO: update configuration
+    app.config.from_object(config)
 
     # ensure the instance folder exists
     try:
