@@ -15,6 +15,12 @@ def create_app(test_config=None):
     app = Flask(__name__, instance_relative_config=True)
     app.config.from_object(config)
 
+    # use instance path for test db (default in flask_sqlalchemy 3.0.0)
+    if '{instance_path}' in app.config['SQLALCHEMY_DATABASE_URI']:
+        app.config['SQLALCHEMY_DATABASE_URI'] = \
+            app.config['SQLALCHEMY_DATABASE_URI'].format(
+                instance_path=app.instance_path)
+
     # ensure the instance folder exists
     try:
         os.makedirs(app.instance_path)
