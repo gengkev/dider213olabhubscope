@@ -1,14 +1,11 @@
 import os
 
 from flask import Flask
-from flask_migrate import Migrate
-from flask_sqlalchemy import SQLAlchemy
 
-from . import config
-from .models import db
+from . import auth, config, home
+from .auth import login_manager
+from .models import db, migrate
 
-
-migrate = Migrate()
 
 def create_app(test_config=None):
     # create and configure the app
@@ -29,13 +26,10 @@ def create_app(test_config=None):
 
     db.init_app(app)
     migrate.init_app(app, db)
+    login_manager.init_app(app)
 
-    # a simple page that says hello
-    @app.route('/hello')
-    def hello():
-        return 'Hello, World!'
-
-    from . import auth
-    app.register_blueprint(auth.bp)
+    app.register_blueprint(home.bp)
+    app.register_blueprint(auth.google_bp, url_prefix='/auth')
+    app.register_blueprint(auth.github_bp, url_prefix='/auth')
 
     return app

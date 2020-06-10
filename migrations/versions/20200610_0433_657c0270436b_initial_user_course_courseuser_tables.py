@@ -1,8 +1,8 @@
-"""Add Course, CourseUser, User tables
+"""Initial User, Course, CourseUser tables
 
-Revision ID: 0f61881252a2
+Revision ID: 657c0270436b
 Revises: 
-Create Date: 2020-06-09 01:26:36.796220
+Create Date: 2020-06-10 04:33:44.443879
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '0f61881252a2'
+revision = '657c0270436b'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -32,15 +32,15 @@ def upgrade():
     sa.UniqueConstraint('username')
     )
     op.create_table('course_user',
-    sa.Column('user', sa.Integer(), nullable=False),
-    sa.Column('course', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('course_id', sa.Integer(), nullable=False),
     sa.Column('user_type', sa.Enum('STUDENT', 'INSTRUCTOR', name='usertype'), nullable=False),
     sa.Column('lecture', sa.String(length=32), nullable=False),
     sa.Column('section', sa.String(length=32), nullable=False),
     sa.Column('dropped', sa.Boolean(), nullable=False),
-    sa.ForeignKeyConstraint(['course'], ['course.id'], ),
-    sa.ForeignKeyConstraint(['user'], ['user.id'], ),
-    sa.PrimaryKeyConstraint('user', 'course')
+    sa.ForeignKeyConstraint(['course_id'], ['course.id'], ),
+    sa.ForeignKeyConstraint(['user_id'], ['user.id'], ),
+    sa.PrimaryKeyConstraint('user_id', 'course_id')
     )
     # ### end Alembic commands ###
 
