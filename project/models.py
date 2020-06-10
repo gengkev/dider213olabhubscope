@@ -20,7 +20,7 @@ class User(UserMixin, db.Model):
         backref=db.backref('user', lazy='joined'))
 
     def get_id(self):
-        return self.username
+        return self.id
 
     def __repr__(self):
         return '<User %r>' % self.username

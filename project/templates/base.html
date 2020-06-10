@@ -52,14 +52,11 @@
       <li class="nav-item">
         <a class="nav-link" href="{# url 'registration:profile' #}">
           <i class="fa fa-user" aria-hidden="true"></i>
-          {#
-          {% if user.is_authenticated %}
-          {{ user.get_username }}
+          {% if current_user.is_authenticated %}
+          {{ current_user.username }}
           {% else %}
           Not logged in
           {% endif %}
-          #}
-          Username
         </a>
       </li>
 

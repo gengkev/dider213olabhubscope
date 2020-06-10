@@ -1,7 +1,7 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
-from flask_login import login_required
+from flask_login import login_required, current_user
 
 
 bp = Blueprint('home', __name__)
@@ -14,7 +14,8 @@ def index():
 
 @bp.route('/bla', methods=('GET',))
 def bla():
-    return 'hello: ' + url_for('google.login')
+    print(current_user)
+    return 'hello: {}'.format(current_user.is_authenticated)
 
 
 @bp.route('/protected', methods=('GET',))

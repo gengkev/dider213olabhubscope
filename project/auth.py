@@ -1,9 +1,7 @@
 import jwt
 import requests
 
-from flask import (
-    Blueprint, flash, g, redirect, render_template, request, session, url_for
-)
+from flask import flash
 from flask_dance.consumer import oauth_authorized
 from flask_dance.contrib.github import make_github_blueprint
 from flask_dance.contrib.google import make_google_blueprint
@@ -48,6 +46,7 @@ def google_logged_in(blueprint, token):
 
     google_email = id_token['sub']
     email = id_token['email']
+    print(id_token)
 
     # Extract username from email
     assert email.endswith(config.EMAIL_SUFFIX)
@@ -62,7 +61,8 @@ def google_logged_in(blueprint, token):
         db.session.commit()
 
     # Mark as signed-in in session
-    login_user(user)
+    res = login_user(user)
+    assert res
     flash('Successfully signed in as {}.'.format(username))
 
     # Disable default behavior of flask-dance
@@ -88,6 +88,7 @@ def github_logged_in(blueprint, token):
     print(github_info)
 
     return False
+
 
 @login_manager.user_loader
 def load_user(user_id):
