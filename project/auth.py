@@ -1,17 +1,20 @@
 import jwt
 import requests
 
-from flask import flash
+from flask import Blueprint, flash, redirect, render_template, url_for
 from flask_dance.consumer import oauth_authorized
 from flask_dance.contrib.github import make_github_blueprint
 from flask_dance.contrib.google import make_google_blueprint
-from flask_login import LoginManager, login_user
+from flask_login import LoginManager, login_user, logout_user
 
 from . import config
 from .models import db, User
 
 
 login_manager = LoginManager()
+login_manager.login_view = 'auth.login'
+
+bp = Blueprint('auth', __name__)
 
 google_bp = make_google_blueprint(
     scope=['openid', 'https://www.googleapis.com/auth/userinfo.email'],
@@ -19,6 +22,17 @@ google_bp = make_google_blueprint(
 )
 
 github_bp = make_github_blueprint()
+
+
+@bp.route('/login/')
+def login():
+    return render_template('auth/login.html')
+
+
+@bp.route('/logout/')
+def logout():
+    logout_user()
+    return render_template('auth/logout.html')
 
 
 @oauth_authorized.connect_via(google_bp)

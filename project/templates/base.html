@@ -20,7 +20,7 @@
 <body>
 
   <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="{# url 'registration:index' #}">Exam Registration System</a>
+    <a class="navbar-brand" href="{{ url_for('home.index') }}">Dider213olabhubscope</a>
 
     <!-- Left-aligned breadcrumbs -->
     <ol class="navbar-nav mr-auto my-breadcrumb" aria-label="breadcrumb">
@@ -61,7 +61,7 @@
       </li>
 
       <li class="nav-item">
-        <a class="nav-link" href="/Shibboleth.sso/Logout">
+        <a class="nav-link" href="{{ url_for('auth.logout') }}">
           <i class="fa fa-sign-out" aria-hidden="true"></i>
           Logout
         </a>

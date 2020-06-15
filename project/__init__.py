@@ -29,6 +29,7 @@ def create_app(test_config=None):
     login_manager.init_app(app)
 
     app.register_blueprint(home.bp)
+    app.register_blueprint(auth.bp, url_prefix='/auth')
     app.register_blueprint(auth.google_bp, url_prefix='/auth')
     app.register_blueprint(auth.github_bp, url_prefix='/auth')
 
