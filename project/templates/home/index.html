@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}Home{% endblock %}
+
+{% block breadcrumb %}
+{% endblock %}
+
+{% block content %}
+
+{# Loop through each course this user is in #}
+{% if current_user.course_users %}
+<div>
+  <h1>Courses</h1>
+
+  {% for course_user in current_user.course_users %}
+  {% with course = course_user.course %}
+
+  <div class="card course-card text-white bg-info">
+    <a class="card-body text-white" href="{{ url_for('home.course_detail', course_code=course.code) }}">
+      <h5 class="card-title">{{ course.name }}</h5>
+      <h6 class="card-subtitle text-white-50">{{ course.code }}</h6>
+    </a>
+
+    <div class="list-group list-group-flush">
+      <a href="#" class="list-group-item list-group-item-action">
+        Exam list goes here
+      </a>
+      {#
+      {% for exam in course.exam_set.all %}
+      <a href="{% url 'registration:exam-detail' course.code exam.id %}"
+          class="list-group-item list-group-item-action">
+        {{ exam.name }}
+      </a>
+      {% endfor %}
+      #}
+    </div>
+  </div>
+
+  {% endwith %}
+  {% endfor %} {# course_user #}
+</div>
+
+{% else %}
+<div class="row">
+  <div class="col-md-8">
+  <h2>Courses</h2>
+  <p class="lead">
+    You are not enrolled in any courses.
+  </p>
+  <p>
+    If you believe you should be enrolled in a course, please contact the
+    instructor of the appropriate course for assistance. If you'd like to
+    create a course, please contact the developers.
+  </p>
+  </div>
+</div>
+{% endif %}
+
+{% endblock %}

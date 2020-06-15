@@ -1,0 +1,155 @@
+{% extends "base.html" %}
+
+{% block title %}{{ course.name }}{% endblock %}
+
+{% block breadcrumb %}
+<li class="nav-item active" aria-current="page">
+  <span class="nav-link">{{ course.code }}</span>
+</li>
+{% endblock %}
+
+{% block content %}
+<h1>
+  {{ course.name }}
+  <small class="text-muted">{{ course.code }}</small>
+</h1>
+
+
+{#
+{% if my_course_user.is_instructor %}
+<div class="border border-dark shadow px-4 py-2 my-4 rounded">
+ <div>
+    <h2>Course management</h2>
+
+    <div>
+      <a class="btn btn-lg btn-success" role="button" href="{% url 'registration:course-users' course.code %}">
+        <i class="fa fa-users" aria-hidden="true"></i>
+        &nbsp;Manage users
+      </a>
+
+      <a class="btn btn-lg btn-info" role="button" href="{% url 'registration:course-edit' course.code %}">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+        &nbsp;Course settings
+      </a>
+
+      <a class="btn btn-lg btn-warning" role="button" href="{% url 'registration:course-sudo' course.code %}">
+        <i class="fa fa-user-secret" aria-hidden="true"></i>
+        &nbsp;Act as user
+      </a>
+    </div>
+  </div>
+
+  <div class="list-group mt-4 mb-4">
+    {% for exam in course.exam_set.all %}
+
+    <a href="{% url 'registration:exam-detail' course.code exam.id %}"
+       class="list-group-item list-group-item-action flex-column align-items-start">
+      <h5 class="mb-1">{{ exam.name }}</h5>
+    </a>
+
+    {% endfor %}
+  </div>
+
+</div>
+{% endif %}
+#}
+
+
+<div class="row">
+  <div class="col-lg-6">
+    <h2>Exams</h2>
+    <div class="list-group mb-4">
+
+      {% if exam_list %}
+
+      {# For each course, loop through each exam this user is in #}
+      {#
+      {% for exam, exam_reg in exam_list %}
+
+      <a href="{% url 'registration:exam-detail' course.code exam.id %}" class="list-group-item list-group-item-action exam-item-outline">
+        <h5 class="mb-1">{{ exam.name }}</h5>
+        <p class="mb-0">
+          {% if exam_reg and exam_reg.exam_slot %}
+          {{ exam_reg.exam_slot.get_start_time|date:"l, F j, Y" }} at
+          {{ exam_reg.exam_slot.get_start_time|time:"h:i a" }}
+          {% else %}
+          Not registered
+          {% endif %}
+        </p>
+      </a>
+
+      {% endfor %}
+      #}
+
+      {% else %}
+      <p class="lead">
+        You aren't registered for any exams in this course.
+      </p>
+      <p>
+        If you believe this is a mistake, please contact your course
+        instructor for help. They will be able to allow you to register
+        for an exam, if appropriate.
+      </p>
+      {% endif %}
+
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h2>GitHub account</h2>
+
+    <div class="border border-light p-4 bg-light rounded">
+      {#
+      {% if my_course_user.github_token %}
+      <strong>{{ my_course_user.github_token.github_login }}</strong><br>
+      <a href="{% url 'registration:course-github-deauthorize' course.code %}">Unlink GitHub account</a><br>
+      Authorized: {{ my_course_user.github_token.authorize_time|date:"F j, Y" }}
+      {% else %}
+      #}
+      You have not yet linked a GitHub account.<br>
+      {#
+      <a href="{% url 'registration:course-github-authorize' course.code %}">Link GitHub account</a>
+      {% endif %}
+      #}
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <h2>Enrollment info</h2>
+
+    <div class="border border-light p-4 bg-light rounded">
+
+      <dl class="row mb-0">
+        <dt class="col-sm-3">User type</dt>
+        <dd class="col-sm-9">
+        {{ my_course_user.user_type_display }}
+        </dd>
+
+        <dt class="col-sm-3">Exam type</dt>
+        <dd class="col-sm-9">
+        {{ my_course_user.exam_slot_type_display }}
+        </dd>
+
+        <dt class="col-sm-3">Lecture</dt>
+        <dd class="col-sm-9">
+        {{ my_course_user.lecture|default('(none)') }}
+        </dd>
+
+        <dt class="col-sm-3">Section</dt>
+        <dd class="col-sm-9">
+        {{ my_course_user.section|default('(none)') }}
+        </dd>
+
+        <dt class="col-sm-3">Dropped</dt>
+        <dd class="col-sm-9">
+        {{ my_course_user.dropped }}
+        </dd>
+      </dl>
+
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}
