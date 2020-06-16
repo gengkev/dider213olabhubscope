@@ -3,11 +3,13 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 from flask_login import login_required, current_user
-from flask_wtf import FlaskForm
 from functools import wraps
 from werkzeug.exceptions import Forbidden
+from wtforms import SubmitField
+from wtforms.validators import DataRequired
+from wtforms.ext.sqlalchemy.fields import QuerySelectField
 
-from .models import Course, CourseUser, UserType
+from .models import Course, CourseUser, ModelForm, User, UserType
 
 
 bp = Blueprint('course', __name__)
@@ -63,3 +65,22 @@ def index():
 @course_instructor_required
 def users():
     return render_template('course/users.html')
+
+
+class UserCreateForm(ModelForm):
+    user = QuerySelectField()
+    class Meta:
+        model = CourseUser
+        include_foreign_keys = True
+
+
+@bp.route('/users/create/')
+@login_required
+@course_instructor_required
+def users_create():
+    form = UserCreateForm()
+    form.user.query = User.query
+    return render_template(
+        'course/users_create.html',
+        form=form,
+    )

@@ -1,4 +1,3 @@
-import jwt
 import requests
 
 from flask import Blueprint, flash, redirect, render_template, url_for

@@ -3,7 +3,9 @@ import enum
 from flask_login import UserMixin
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
 from sqlalchemy import MetaData
+from wtforms_alchemy import model_form_factory
 
 
 metadata = MetaData(naming_convention={
@@ -15,6 +17,13 @@ metadata = MetaData(naming_convention={
 })
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
+
+
+BaseModelForm = model_form_factory(FlaskForm)
+class ModelForm(BaseModelForm):
+    @classmethod
+    def get_session(self):
+        return db.session
 
 
 class User(UserMixin, db.Model):
@@ -35,6 +44,9 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return '<User {}>'.format(self.username)
 
+    def __str__(self):
+        return self.username
+
 
 class Course(db.Model):
     __tablename__ = 'course'
@@ -52,8 +64,8 @@ class Course(db.Model):
 
 
 class UserType(enum.Enum):
-    STUDENT = 'Student'
-    INSTRUCTOR = 'Instructor'
+    STUDENT = 'STUDENT'
+    INSTRUCTOR = 'INSTRUCTOR'
 
 
 class CourseUser(db.Model):
@@ -61,10 +73,35 @@ class CourseUser(db.Model):
 
     user_id = db.Column(db.ForeignKey('user.id'), primary_key=True)
     course_id = db.Column(db.ForeignKey('course.id'), primary_key=True)
-    user_type = db.Column(db.Enum(UserType), nullable=False, default=UserType.STUDENT)
-    lecture = db.Column(db.String(32))
-    section = db.Column(db.String(32))
-    dropped = db.Column(db.Boolean(), nullable=False, default=False)
+    user_type = db.Column(
+        db.Enum(UserType), nullable=False, default=UserType.STUDENT,
+        info=dict(label='User type'),
+    )
+    lecture = db.Column(
+        db.String(32),
+        info=dict(
+            label='Lecture',
+            description='The student\'s lecture number',
+        ),
+    )
+    section = db.Column(
+        db.String(32),
+        info=dict(
+            label='Section',
+            description='The student\'s section number',
+        ),
+    )
+    dropped = db.Column(
+        db.Boolean(), nullable=False, default=False,
+        info=dict(
+            label='Dropped',
+            description=(
+                'Whether the student has dropped this course. This prevents '
+                'the student from updating any information related to this '
+                'course, although they can continue to log in.'
+            ),
+        ),
+    )
 
     def is_instructor(self):
         '''Returns whether this course user is an instructor.'''

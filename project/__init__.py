@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from flask_bootstrap import Bootstrap
 
 from . import config
 from .auth import login_manager
@@ -27,6 +28,7 @@ def create_app(test_config=None):
     db.init_app(app)
     migrate.init_app(app, db)
     login_manager.init_app(app)
+    Bootstrap(app)
 
     from . import auth, course, home
     app.register_blueprint(home.bp)
