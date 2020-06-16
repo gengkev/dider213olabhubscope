@@ -50,7 +50,7 @@
       #}
 
       <li class="nav-item">
-        <a class="nav-link" href="{# url 'registration:profile' #}">
+        <a class="nav-link" href="{{ url_for('home.profile') }}">
           <i class="fa fa-user" aria-hidden="true"></i>
           {% if current_user.is_authenticated %}
           {{ current_user.username }}
@@ -75,6 +75,9 @@
     {% block content %}
     {% endblock %}
   </div>
+
+  <script src="{{ url_for('static', filename='vendor/luxon-1.24.1/global/luxon.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='main.js') }}"></script>
 
 </body>
 </html>

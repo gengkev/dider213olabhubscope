@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% block breadcrumb %}
+<li class="nav-item active" aria-current="page">
+  <span class="nav-link">Profile</span>
+</li>
+{% endblock %}
+
+{% block content %}
+<h2>Profile</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="border border-light p-4 bg-light rounded">
+      <dl class="row mb-0">
+
+        <dt class="col-sm-4">Authenticated</dt>
+        <dd class="col-sm-8">{{ current_user.is_authenticated }}</dd>
+
+        <dt class="col-sm-4">Username</dt>
+        <dd class="col-sm-8">{{ current_user.username }}</dd>
+
+        <dt class="col-sm-4">Timezone</dt>
+        <dd class="col-sm-8">
+          <span class="replace-timezone">
+            Requires JavaScript to detect
+          </span>
+        </dd>
+
+        <dt class="col-sm-4">Local time</dt>
+        <dd class="col-sm-8">
+          <span class="replace-datetime">
+            {{ now.isoformat() }}
+          </span>
+        </dd>
+
+      </dl>
+    </div>
+  </div>
+
+  {#
+  <div class="col-md-6">
+    {% load crispy_forms_tags %}
+
+    <form action="" method="POST">
+      {% csrf_token %}
+      <table>
+        {{ form|crispy }}
+      </table>
+      <input class="btn btn-primary" type="submit" value="Submit">
+    </form>
+  </div>
+  #}
+
+</div>
+{% endblock %}
