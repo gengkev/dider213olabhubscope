@@ -14,3 +14,7 @@ Running development server:
 Initializing database tables:
 
     $ poetry run flask db upgrade
+
+Creating migrations:
+
+    $ poetry run flask db migrate -m "Message goes here"
