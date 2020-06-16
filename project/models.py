@@ -7,11 +7,11 @@ from sqlalchemy import MetaData
 
 
 metadata = MetaData(naming_convention={
-    "ix": 'ix_%(column_0_label)s',
-    "uq": "uq_%(table_name)s_%(column_0_name)s",
-    "ck": "ck_%(table_name)s_%(column_0_name)s",
-    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
-    "pk": "pk_%(table_name)s"
+    'ix': 'ix_%(column_0_label)s',
+    'uq': 'uq_%(table_name)s_%(column_0_name)s',
+    'ck': 'ck_%(table_name)s_%(column_0_name)s',
+    'fk': 'fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s',
+    'pk': 'pk_%(table_name)s'
 })
 db = SQLAlchemy(metadata=metadata)
 migrate = Migrate()
@@ -33,7 +33,7 @@ class User(UserMixin, db.Model):
         return self.id
 
     def __repr__(self):
-        return '<User %r>' % self.username
+        return '<User {}>'.format(self.username)
 
 
 class Course(db.Model):
@@ -48,12 +48,12 @@ class Course(db.Model):
         backref=db.backref('course', lazy='joined'))
 
     def __repr__(self):
-        return '<Course %r>' % self.code
+        return '<Course {}>'.format(self.username)
 
 
 class UserType(enum.Enum):
-    STUDENT = 's'
-    INSTRUCTOR = 'i'
+    STUDENT = 'Student'
+    INSTRUCTOR = 'Instructor'
 
 
 class CourseUser(db.Model):
@@ -66,5 +66,9 @@ class CourseUser(db.Model):
     section = db.Column(db.String(32))
     dropped = db.Column(db.Boolean(), nullable=False, default=False)
 
+    def is_instructor(self):
+        '''Returns whether this course user is an instructor.'''
+        return self.user_type == CourseUser.INSTRUCTOR
+
     def __repr__(self):
-        return '<CourseUser %r [%r]>' % (self.user.username, self.course.code)
+        return '<CourseUser {} [{}]>'.format(self.user.username, self.course.code)

@@ -2,7 +2,7 @@ import os
 
 from flask import Flask
 
-from . import auth, config, home
+from . import config
 from .auth import login_manager
 from .models import db, migrate
 
@@ -28,9 +28,11 @@ def create_app(test_config=None):
     migrate.init_app(app, db)
     login_manager.init_app(app)
 
+    from . import auth, course, home
     app.register_blueprint(home.bp)
     app.register_blueprint(auth.bp, url_prefix='/auth')
     app.register_blueprint(auth.google_bp, url_prefix='/auth')
     app.register_blueprint(auth.github_bp, url_prefix='/auth')
+    app.register_blueprint(course.bp, url_prefix='/course/<course_code>')
 
     return app

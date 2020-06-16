@@ -1,32 +1,32 @@
 {% extends "base.html" %}
 
-{% block title %}{{ course.name }}{% endblock %}
+{% block title %}{{ g.course.name }}{% endblock %}
 
 {% block breadcrumb %}
 <li class="nav-item active" aria-current="page">
-  <span class="nav-link">{{ course.code }}</span>
+  <span class="nav-link">{{ g.course.code }}</span>
 </li>
 {% endblock %}
 
 {% block content %}
 <h1>
-  {{ course.name }}
-  <small class="text-muted">{{ course.code }}</small>
+  {{ g.course.name }}
+  <small class="text-muted">{{ g.course.code }}</small>
 </h1>
 
 
-{#
-{% if my_course_user.is_instructor %}
+{% if g.course_user.is_instructor %}
 <div class="border border-dark shadow px-4 py-2 my-4 rounded">
- <div>
+ <div class="mb-4">
     <h2>Course management</h2>
 
     <div>
-      <a class="btn btn-lg btn-success" role="button" href="{% url 'registration:course-users' course.code %}">
+      <a class="btn btn-lg btn-success" role="button" href="{{ url_for('course.users') }}">
         <i class="fa fa-users" aria-hidden="true"></i>
         &nbsp;Manage users
       </a>
 
+      {#
       <a class="btn btn-lg btn-info" role="button" href="{% url 'registration:course-edit' course.code %}">
         <i class="fa fa-cog" aria-hidden="true"></i>
         &nbsp;Course settings
@@ -36,10 +36,12 @@
         <i class="fa fa-user-secret" aria-hidden="true"></i>
         &nbsp;Act as user
       </a>
+      #}
     </div>
   </div>
 
-  <div class="list-group mt-4 mb-4">
+  {#
+  <div class="list-group mb-4">
     {% for exam in course.exam_set.all %}
 
     <a href="{% url 'registration:exam-detail' course.code exam.id %}"
@@ -49,10 +51,10 @@
 
     {% endfor %}
   </div>
+  #}
 
 </div>
 {% endif %}
-#}
 
 
 <div class="row">
@@ -100,10 +102,10 @@
 
     <div class="border border-light p-4 bg-light rounded">
       {#
-      {% if my_course_user.github_token %}
-      <strong>{{ my_course_user.github_token.github_login }}</strong><br>
+      {% if g.course_user.github_token %}
+      <strong>{{ g.course_user.github_token.github_login }}</strong><br>
       <a href="{% url 'registration:course-github-deauthorize' course.code %}">Unlink GitHub account</a><br>
-      Authorized: {{ my_course_user.github_token.authorize_time|date:"F j, Y" }}
+      Authorized: {{ g.course_user.github_token.authorize_time|date:"F j, Y" }}
       {% else %}
       #}
       You have not yet linked a GitHub account.<br>
@@ -122,27 +124,29 @@
       <dl class="row mb-0">
         <dt class="col-sm-3">User type</dt>
         <dd class="col-sm-9">
-        {{ my_course_user.user_type_display }}
+        {{ g.course_user.user_type.value }}
         </dd>
 
+        {#
         <dt class="col-sm-3">Exam type</dt>
         <dd class="col-sm-9">
-        {{ my_course_user.exam_slot_type_display }}
+        {{ g.course_user.exam_slot_type_display }}
         </dd>
+        #}
 
         <dt class="col-sm-3">Lecture</dt>
         <dd class="col-sm-9">
-        {{ my_course_user.lecture|default('(none)') }}
+        {{ g.course_user.lecture|default('(none)') }}
         </dd>
 
         <dt class="col-sm-3">Section</dt>
         <dd class="col-sm-9">
-        {{ my_course_user.section|default('(none)') }}
+        {{ g.course_user.section|default('(none)') }}
         </dd>
 
         <dt class="col-sm-3">Dropped</dt>
         <dd class="col-sm-9">
-        {{ my_course_user.dropped }}
+        {{ g.course_user.dropped }}
         </dd>
       </dl>
 

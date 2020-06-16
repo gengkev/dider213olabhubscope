@@ -15,7 +15,7 @@
   {% with course = course_user.course %}
 
   <div class="card course-card text-white bg-info">
-    <a class="card-body text-white" href="{{ url_for('home.course_detail', course_code=course.code) }}">
+    <a class="card-body text-white" href="{{ url_for('course.index', course_code=course.code) }}">
       <h5 class="card-title">{{ course.name }}</h5>
       <h6 class="card-subtitle text-white-50">{{ course.code }}</h6>
     </a>

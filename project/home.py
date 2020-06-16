@@ -25,17 +25,6 @@ def profile():
     )
 
 
-@bp.route('/course/<course_code>/')
-@login_required
-def course_detail(course_code):
-    course = Course.query.filter_by(code=course_code).first()
-    return render_template(
-        'home/course_detail.html',
-        course=course,
-        my_course_user=None,
-    )
-
-
 @bp.route('/protected', methods=('GET',))
 @login_required
 def protected():
